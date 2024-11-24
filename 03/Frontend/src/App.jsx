@@ -6,7 +6,7 @@ const App = () => {
   const [todos, setTodos] = useState([]);
 
   const getTodos = async () => {
-    const response = await fetch("http://localhost:5000/todos");
+    const response = await fetch("http://localhost:3003/todos");
     const todos = await response.json();
     setTodos(todos);
   };
@@ -16,7 +16,7 @@ const App = () => {
   }, []);
 
   const addTodo = async (title) => {
-    const response = await fetch("http://localhost:5000/todos", {
+    const response = await fetch("http://localhost:3003/todos", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ title }),
@@ -26,7 +26,7 @@ const App = () => {
   };
 
   const removeTodo = async (id) => {
-    const response = await fetch(`http://localhost:5000/todos/${id}`, {
+    const response = await fetch(`http://localhost:3003/todos/${id}`, {
       method: "DELETE",
     });
     if (response.status !== 200) {
@@ -36,7 +36,7 @@ const App = () => {
   };
 
   const updateTodo = async (id) => {
-    const response = await fetch(`http://localhost:5000/todos/${id}`, {
+    const response = await fetch(`http://localhost:3003/todos/${id}`, {
       method: "PUT",
     });
     if (response.status !== 200) {
