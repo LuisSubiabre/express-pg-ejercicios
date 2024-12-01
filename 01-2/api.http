@@ -1,0 +1,4 @@
+GET http://localhost:3000/viajes
+###
+GET http://localhost:3000/equipamiento
+###
