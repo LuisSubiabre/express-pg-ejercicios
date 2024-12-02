@@ -24,8 +24,13 @@ const modificarEquipamiento = async (nombre, id) => {
   console.log(nombre);
   const consulta = "UPDATE equipamiento SET nombre = $1 WHERE id = $2";
   const values = [nombre, id];
-  const result = await pool.query(consulta, values);
-  console.log("Equipamiento modificado");
+  const { rowCount } = await pool.query(consulta, values);
+  if (rowCount === 0) {
+    throw {
+      code: 404,
+      message: "No se encontró ningún equipamiento con ese id",
+    };
+  }
 };
 
 const eliminarEquipamiento = async (id) => {

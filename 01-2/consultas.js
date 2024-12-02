@@ -27,10 +27,12 @@ const obtenerViajes = async (req, res) => {
 };
 
 const modificarPresupuesto = async (presupuesto, id) => {
-  console.log(presupuesto, id);
   const consulta = "UPDATE viajes SET presupuesto = $1 WHERE id = $2";
   const values = [presupuesto, id];
-  const result = await pool.query(consulta, values);
+  const { rowCount } = await pool.query(consulta, values);
+  if (rowCount === 0) {
+    throw { code: 404, message: "No se encontró ningún viaje con ese id" };
+  }
 };
 
 const eliminarViaje = async (id) => {

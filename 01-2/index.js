@@ -30,16 +30,27 @@ app.post("/viajes", async (req, res) => {
     await agregarViaje(destino, presupuesto);
     res.send("Viaje agregado con éxito");
   } catch (error) {
+    const { code } = error;
+    if (code === "23502") {
+      res
+        .status(400)
+        .send(
+          'Se ha violado la restricción NOT NULL en uno de los campos de la tabla"'
+        );
+    }
     res.status(500).send(error);
   }
 });
 
 app.put("/viajes/:id", async (req, res) => {
   const { id } = req.params;
-  const { presupuesto } = req.body;
-  console.log(req.body);
-  await modificarPresupuesto(presupuesto, id);
-  res.send("Presupuesto modificado");
+  const { presupuesto } = req.query;
+  try {
+    await modificarPresupuesto(presupuesto, id);
+    res.send("Presupuesto modificado con éxito");
+  } catch ({ code, message }) {
+    res.status(code).send(message);
+  }
 });
 
 app.delete("/viajes/:id", async (req, res) => {
@@ -62,16 +73,26 @@ app.post("/equipamiento", async (req, res) => {
     await agregarEquipamiento(nombre);
     res.send("Equipamiento agregado");
   } catch (error) {
-    res.status(500).send(error);
+    const { code } = error;
+    if (code == "23502") {
+      res.send(
+        'Se ha violado la restricción NOT NULL en uno de los campos de la tabla"'
+      );
+    } else {
+      res.status(500).send(error);
+    }
   }
 });
 
 app.put("/equipamiento/:id", async (req, res) => {
   const { id } = req.params;
   const { nombre } = req.query;
-  console.log(req.body);
-  await modificarEquipamiento(nombre, id);
-  res.send("Equipamiento modificado");
+  try {
+    await modificarEquipamiento(nombre, id);
+    res.send("Equipamiento modificado");
+  } catch ({ code, message }) {
+    res.status(code).send(message);
+  }
 });
 
 app.delete("/equipamiento/:id", async (req, res) => {
